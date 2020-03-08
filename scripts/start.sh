@@ -18,3 +18,11 @@ docker-compose \
   up \
   --detach \
   --scale power-lines-message=0
+
+docker-compose \
+  -f ../power-lines-analysis-service/docker-compose.yaml \
+  -f ../power-lines-analysis-service/docker-compose.override.yaml \
+  -f ../power-lines-analysis-service/docker-compose.link.yaml \
+  up \
+  --detach \
+  --scale power-lines-message=0

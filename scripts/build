@@ -13,3 +13,8 @@ docker-compose \
   -f ../power-lines-analysis-service/docker-compose.yaml \
   -f ../power-lines-analysis-service/docker-compose.override.yaml \
   build $@
+
+docker-compose \
+  -f ../power-lines-web/docker-compose.yaml \
+  -f ../power-lines-web/docker-compose.override.yaml \
+  build $@

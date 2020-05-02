@@ -19,4 +19,11 @@ docker-compose \
   down \
   $@
 
+docker-compose \
+  -f ../power-lines-web/docker-compose.yaml \
+  -f ../power-lines-web/docker-compose.override.yaml \
+  -f ../power-lines-web/docker-compose.link.yaml \
+  down \
+  $@
+
 docker network rm power-lines

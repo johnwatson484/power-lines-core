@@ -11,14 +11,17 @@ projectRoot=$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pw
   printf "\nCloning repositories\n"
 
   test -d power-lines-data-service \
-    && >&2 echo "The 'power-lines-data-service' directory already exists. Skipping." \
+    && >&2 echo "The 'power-lines-service' directory already exists. Skipping." \
     || git clone https://github.com/johnwatson484/power-lines-data-service.git
   test -d power-lines-fixture-service \
-    && >&2 echo "The 'power-lines-data-fixture-service' directory already exists. Skipping." \
+    && >&2 echo "The 'power-lines-fixture-service' directory already exists. Skipping." \
     || git clone https://github.com/johnwatson484/power-lines-fixture-service.git
   test -d power-lines-analysis-service \
-    && >&2 echo "The 'power-lines-data-analysis-service' directory already exists. Skipping." \
+    && >&2 echo "The 'power-lines-analysis-service' directory already exists. Skipping." \
     || git clone https://github.com/johnwatson484/power-lines-analysis-service.git
+  test -d power-lines-web \
+    && >&2 echo "The 'power-lines-web' directory already exists. Skipping." \
+    || git clone https://github.com/johnwatson484/power-lines-web.git
 
   printf "\nBuilding images\n"
 

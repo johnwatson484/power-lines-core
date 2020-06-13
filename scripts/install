@@ -22,6 +22,9 @@ projectRoot=$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pw
   test -d power-lines-web \
     && >&2 echo "The 'power-lines-web' directory already exists. Skipping." \
     || git clone https://github.com/johnwatson484/power-lines-web.git
+  test -d power-lines-accuracy \
+    && >&2 echo "The 'power-lines-accuracy-service' directory already exists. Skipping." \
+    || git clone https://github.com/johnwatson484/power-lines-accuracy-service.git
 
   printf "\nBuilding images\n"
 

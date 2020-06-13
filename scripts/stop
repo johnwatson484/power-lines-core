@@ -26,4 +26,11 @@ docker-compose \
   down \
   $@
 
+docker-compose \
+  -f ../power-lines-accuracy-service/docker-compose.yaml \
+  -f ../power-lines-accuracy-service/docker-compose.override.yaml \
+  -f ../power-lines-accuracy-service/docker-compose.link.yaml \
+  down \
+  $@
+
 docker network rm power-lines

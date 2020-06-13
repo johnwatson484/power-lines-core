@@ -33,3 +33,11 @@ docker-compose \
   -f ../power-lines-web/docker-compose.link.yaml \
   up \
   --detach
+
+  docker-compose \
+  -f ../power-lines-accuracy-service/docker-compose.yaml \
+  -f ../power-lines-accuracy-service/docker-compose.override.yaml \
+  -f ../power-lines-accuracy-service/docker-compose.link.yaml \
+  up \
+  --detach \
+  --scale power-lines-message=0

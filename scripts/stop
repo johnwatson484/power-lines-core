@@ -1,36 +1,46 @@
-docker-compose \
-  -f ../power-lines-data-service/docker-compose.yaml \
-  -f ../power-lines-data-service/docker-compose.override.yaml \
-  -f ../power-lines-data-service/docker-compose.link.yaml \
-  down \
-  $@
+#!/usr/bin/env sh
 
-docker-compose \
-  -f ../power-lines-fixture-service/docker-compose.yaml \
-  -f ../power-lines-fixture-service/docker-compose.override.yaml \
-  -f ../power-lines-fixture-service/docker-compose.link.yaml \
-  down \
-  $@
+set -e
+projectRoot=$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)
 
-docker-compose \
-  -f ../power-lines-analysis-service/docker-compose.yaml \
-  -f ../power-lines-analysis-service/docker-compose.override.yaml \
-  -f ../power-lines-analysis-service/docker-compose.link.yaml \
-  down \
-  $@
+(
+  cd "${projectRoot}"
+  cd ..
 
-docker-compose \
-  -f ../power-lines-web/docker-compose.yaml \
-  -f ../power-lines-web/docker-compose.override.yaml \
-  -f ../power-lines-web/docker-compose.link.yaml \
-  down \
-  $@
+  docker-compose \
+    -f power-lines-data-service/docker-compose.yaml \
+    -f power-lines-data-service/docker-compose.override.yaml \
+    -f power-lines-data-service/docker-compose.link.yaml \
+    down \
+    $@
 
-docker-compose \
-  -f ../power-lines-accuracy-service/docker-compose.yaml \
-  -f ../power-lines-accuracy-service/docker-compose.override.yaml \
-  -f ../power-lines-accuracy-service/docker-compose.link.yaml \
-  down \
-  $@
+  docker-compose \
+    -f power-lines-fixture-service/docker-compose.yaml \
+    -f power-lines-fixture-service/docker-compose.override.yaml \
+    -f power-lines-fixture-service/docker-compose.link.yaml \
+    down \
+    $@
 
-docker network rm power-lines
+  docker-compose \
+    -f power-lines-analysis-service/docker-compose.yaml \
+    -f power-lines-analysis-service/docker-compose.override.yaml \
+    -f power-lines-analysis-service/docker-compose.link.yaml \
+    down \
+    $@
+
+  docker-compose \
+    -f power-lines-web/docker-compose.yaml \
+    -f power-lines-web/docker-compose.override.yaml \
+    -f power-lines-web/docker-compose.link.yaml \
+    down \
+    $@
+
+  docker-compose \
+    -f power-lines-accuracy-service/docker-compose.yaml \
+    -f power-lines-accuracy-service/docker-compose.override.yaml \
+    -f power-lines-accuracy-service/docker-compose.link.yaml \
+    down \
+    $@
+
+  docker network rm power-lines
+)

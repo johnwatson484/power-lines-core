@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+set -e
+projectRoot=$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)
+
+(
+  cd "${projectRoot}"
+
+  code power-lines-data-service
+  code power-lines-fixture-service
+  code power-lines-analysis-service
+  code power-lines-accuracy-service
+  code power-lines-web
+)

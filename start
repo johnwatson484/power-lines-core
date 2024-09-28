@@ -5,42 +5,42 @@ projectRoot=$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pw
 
 (
   cd "${projectRoot}"
-  cd ..
 
   docker-compose \
     -f power-lines-data-service/docker-compose.yaml \
     -f power-lines-data-service/docker-compose.override.yaml \
-    -f power-lines-data-service/docker-compose.link.yaml \
-    down \
+    up \
+    --detach \
     $@
 
   docker-compose \
     -f power-lines-fixture-service/docker-compose.yaml \
     -f power-lines-fixture-service/docker-compose.override.yaml \
-    -f power-lines-fixture-service/docker-compose.link.yaml \
-    down \
+    up \
+    --detach \
+    --scale power-lines-message=0 \
     $@
 
   docker-compose \
     -f power-lines-analysis-service/docker-compose.yaml \
     -f power-lines-analysis-service/docker-compose.override.yaml \
-    -f power-lines-analysis-service/docker-compose.link.yaml \
-    down \
+    up \
+    --detach \
+    --scale power-lines-message=0 \
     $@
 
   docker-compose \
     -f power-lines-web/docker-compose.yaml \
     -f power-lines-web/docker-compose.override.yaml \
-    -f power-lines-web/docker-compose.link.yaml \
-    down \
+    up \
+    --detach \
     $@
 
-  docker-compose \
+    docker-compose \
     -f power-lines-accuracy-service/docker-compose.yaml \
     -f power-lines-accuracy-service/docker-compose.override.yaml \
-    -f power-lines-accuracy-service/docker-compose.link.yaml \
-    down \
+    up \
+    --detach \
+    --scale power-lines-message=0 \
     $@
-
-  docker network rm power-lines
 )

@@ -5,30 +5,34 @@ projectRoot=$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pw
 
 (
   cd "${projectRoot}"
-  cd ..
 
   docker-compose \
     -f power-lines-data-service/docker-compose.yaml \
     -f power-lines-data-service/docker-compose.override.yaml \
-    build $@
+    down \
+    $@
 
   docker-compose \
     -f power-lines-fixture-service/docker-compose.yaml \
     -f power-lines-fixture-service/docker-compose.override.yaml \
-    build $@
+    down \
+    $@
 
   docker-compose \
     -f power-lines-analysis-service/docker-compose.yaml \
     -f power-lines-analysis-service/docker-compose.override.yaml \
-    build $@
+    down \
+    $@
 
   docker-compose \
     -f power-lines-web/docker-compose.yaml \
     -f power-lines-web/docker-compose.override.yaml \
-    build $@
+    down \
+    $@
 
   docker-compose \
     -f power-lines-accuracy-service/docker-compose.yaml \
     -f power-lines-accuracy-service/docker-compose.override.yaml \
-    build $@
+    down \
+    $@
 )

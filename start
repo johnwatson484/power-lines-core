@@ -1,46 +1,17 @@
-#!/usr/bin/env sh
-
-set -e
-projectRoot=$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)
-
-(
-  cd "${projectRoot}"
-
-  docker-compose \
-    -f power-lines-data-service/docker-compose.yaml \
-    -f power-lines-data-service/docker-compose.override.yaml \
-    up \
-    --detach \
-    $@
-
-  docker-compose \
-    -f power-lines-fixture-service/docker-compose.yaml \
-    -f power-lines-fixture-service/docker-compose.override.yaml \
-    up \
-    --detach \
-    --scale power-lines-message=0 \
-    $@
-
-  docker-compose \
-    -f power-lines-analysis-service/docker-compose.yaml \
-    -f power-lines-analysis-service/docker-compose.override.yaml \
-    up \
-    --detach \
-    --scale power-lines-message=0 \
-    $@
-
-  docker-compose \
-    -f power-lines-web/docker-compose.yaml \
-    -f power-lines-web/docker-compose.override.yaml \
-    up \
-    --detach \
-    $@
-
-    docker-compose \
-    -f power-lines-accuracy-service/docker-compose.yaml \
-    -f power-lines-accuracy-service/docker-compose.override.yaml \
-    up \
-    --detach \
-    --scale power-lines-message=0 \
-    $@
-)
+#!/usr/bin/env bash
+set -euo pipefail
+core_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+repos_root="$(dirname -- "$core_root")"
+use_docker=false
+if [[ "${1:-}" == --docker ]]; then use_docker=true; shift; fi
+if [[ $# -gt 0 ]]; then echo "Usage: $0 [--docker]" >&2; exit 2; fi
+# Both repos define the same broker. Start sequentially to avoid creation races.
+for repo in power-lines-web power-lines-data-service; do
+  "$repos_root/$repo/scripts/services-up"
+done
+if "$use_docker"; then
+  (cd "$repos_root/power-lines-web" && docker compose --profile app up -d --build power-lines-web)
+  echo "Web is running in Docker. Run ./data-service-run --docker --fixtures when consumers are ready."
+else
+  echo "Open the workspace with ./open, then run Tasks: Run Task > Local: Start all."
+fi

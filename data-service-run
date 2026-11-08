@@ -1,3 +1,5 @@
-#!/bin/sh
-
-docker exec -it power-lines-data-service dotnet run --project ./PowerLinesDataService $@
+#!/usr/bin/env bash
+set -euo pipefail
+core_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+repos_root="$(dirname -- "$core_root")"
+exec "$repos_root/power-lines-data-service/scripts/run-service" "$@"

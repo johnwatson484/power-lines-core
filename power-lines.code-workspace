@@ -1,0 +1,198 @@
+{
+  "folders": [
+    {
+      "name": "power-lines-core",
+      "path": "."
+    },
+    {
+      "name": "power-lines-web",
+      "path": "../power-lines-web"
+    },
+    {
+      "name": "power-lines-data-service",
+      "path": "../power-lines-data-service"
+    }
+  ],
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Local: Dependencies",
+        "type": "shell",
+        "command": "./start",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-core}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Local: power-lines-web",
+        "type": "shell",
+        "command": "trap true INT; ./scripts/dev; exec bash",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-web}"
+        },
+        "problemMatcher": [],
+        "isBackground": true,
+        "presentation": {
+          "group": "local",
+          "panel": "dedicated",
+          "reveal": "always"
+        }
+      },
+      {
+        "label": "Terminal: power-lines-data-service",
+        "type": "shell",
+        "command": "exec bash",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-data-service}"
+        },
+        "problemMatcher": [],
+        "isBackground": true,
+        "presentation": {
+          "group": "local",
+          "panel": "dedicated",
+          "reveal": "always"
+        }
+      },
+      {
+        "label": "Local: Apps and terminals",
+        "dependsOn": [
+          "Local: power-lines-web",
+          "Terminal: power-lines-data-service"
+        ],
+        "dependsOrder": "parallel",
+        "problemMatcher": []
+      },
+      {
+        "label": "Local: Start all",
+        "dependsOn": [
+          "Local: Dependencies",
+          "Local: Apps and terminals"
+        ],
+        "dependsOrder": "sequence",
+        "problemMatcher": []
+      },
+      {
+        "label": "Import: Fixtures",
+        "type": "shell",
+        "command": "./data-service-run --fixtures",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-core}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Import: Current results",
+        "type": "shell",
+        "command": "./data-service-run --results",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-core}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Import: Full history",
+        "type": "shell",
+        "command": "./data-service-run --results --all",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-core}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Terminal: power-lines-web only",
+        "type": "shell",
+        "command": "exec bash",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-web}"
+        },
+        "problemMatcher": [],
+        "isBackground": true,
+        "presentation": {
+          "group": "terminals",
+          "panel": "dedicated",
+          "reveal": "always"
+        }
+      },
+      {
+        "label": "Test: power-lines-web",
+        "type": "shell",
+        "command": "dotnet test --collect:\"XPlat Code Coverage\"",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-web}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Terminal: power-lines-data-service only",
+        "type": "shell",
+        "command": "exec bash",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-data-service}"
+        },
+        "problemMatcher": [],
+        "isBackground": true,
+        "presentation": {
+          "group": "terminals",
+          "panel": "dedicated",
+          "reveal": "always"
+        }
+      },
+      {
+        "label": "Test: power-lines-data-service",
+        "type": "shell",
+        "command": "dotnet test --collect:\"XPlat Code Coverage\"",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-data-service}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Terminal: Open Web + Data",
+        "dependsOn": [
+          "Terminal: power-lines-web only",
+          "Terminal: power-lines-data-service only"
+        ],
+        "dependsOrder": "parallel",
+        "problemMatcher": []
+      },
+      {
+        "label": "Build",
+        "type": "shell",
+        "command": "./build",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-core}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Local: Stop dependencies",
+        "type": "shell",
+        "command": "./stop",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-core}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Docker: Start",
+        "type": "shell",
+        "command": "./start --docker",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-core}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Docker: Stop",
+        "type": "shell",
+        "command": "./stop --docker",
+        "options": {
+          "cwd": "${workspaceFolder:power-lines-core}"
+        },
+        "problemMatcher": []
+      }
+    ]
+  }
+}

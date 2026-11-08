@@ -1,33 +1,16 @@
-#!/usr/bin/env sh
-
-set -e
-projectRoot=$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)
-
-(
-  cd "${projectRoot}"
-
-  docker-compose \
-    -f power-lines-data-service/docker-compose.yaml \
-    -f power-lines-data-service/docker-compose.override.yaml \
-    build $@
-
-  docker-compose \
-    -f power-lines-fixture-service/docker-compose.yaml \
-    -f power-lines-fixture-service/docker-compose.override.yaml \
-    build $@
-
-  docker-compose \
-    -f power-lines-analysis-service/docker-compose.yaml \
-    -f power-lines-analysis-service/docker-compose.override.yaml \
-    build $@
-
-  docker-compose \
-    -f power-lines-web/docker-compose.yaml \
-    -f power-lines-web/docker-compose.override.yaml \
-    build $@
-
-  docker-compose \
-    -f power-lines-accuracy-service/docker-compose.yaml \
-    -f power-lines-accuracy-service/docker-compose.override.yaml \
-    build $@
-)
+#!/usr/bin/env bash
+set -euo pipefail
+core_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+repos_root="$(dirname -- "$core_root")"
+use_docker=false
+if [[ "${1:-}" == --docker ]]; then use_docker=true; shift; fi
+for repo in power-lines-web power-lines-data-service; do
+  (
+    cd "$repos_root/$repo"
+    if "$use_docker"; then
+      docker compose --profile app build "$@"
+    else
+      dotnet build "$@"
+    fi
+  )
+done

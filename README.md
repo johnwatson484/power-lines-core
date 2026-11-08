@@ -64,7 +64,6 @@ All scripts resolve sibling paths relative to core, so they work from other dire
 ```sh
 bash -n install build start stop open data-service-run
 shellcheck install build start stop open data-service-run
-python3 -m unittest discover -s tests -v
 ```
 
-PR checks run shell syntax, ShellCheck, workspace validation and orchestration smoke tests with stubbed external commands. They need no app clones, .NET SDK or Docker daemon. App repositories run their own native builds and Testcontainers suites.
+PR checks run shell syntax and ShellCheck. They need no app clones, .NET SDK or Docker daemon. App repositories run their own native builds and Testcontainers suites.

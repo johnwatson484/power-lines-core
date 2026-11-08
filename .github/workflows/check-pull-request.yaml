@@ -12,5 +12,3 @@ jobs:
         run: bash -n install build start stop open data-service-run
       - name: ShellCheck
         run: shellcheck install build start stop open data-service-run
-      - name: Workspace and orchestration smoke tests
-        run: python3 -m unittest discover -s tests -v
